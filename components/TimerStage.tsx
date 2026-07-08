@@ -8,7 +8,7 @@ import { getStyle } from "@/lib/timerStyles/registry";
 const VIGNETTES = {
   dark: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.35) 100%)",
   light:
-    "radial-gradient(ellipse at center, transparent 50%, rgba(160, 150, 185, 0.18) 100%)",
+    "radial-gradient(ellipse at center, transparent 42%, rgba(160, 150, 185, 0.16) 100%)",
 } as const;
 
 export function TimerStage({ styleId }: { styleId: string }) {

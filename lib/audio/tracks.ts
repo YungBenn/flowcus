@@ -15,7 +15,7 @@ export const MUSIC_TRACKS: Track[] = [
   {
     id: "1",
     title: "Hans Zimmer - Interstellar (Space Sounds) by dhe perissann",
-    category: "Cinematic 🚀",
+    category: "🚀 Cinematic",
     youtubeId: parseYouTubeId(
       "https://youtu.be/5gO0xpY_Y3E?si=HATu-btAXcgkNJ4Z",
     )!,
@@ -23,7 +23,7 @@ export const MUSIC_TRACKS: Track[] = [
   {
     id: "2",
     title: "lofi hip hop radio - beats to study/relax to by Chillhop Music",
-    category: "Lofi 🎵",
+    category: "☕️ Lofi",
     youtubeId: parseYouTubeId(
       "https://www.youtube.com/live/7NOSDKb0HlU?si=eHH5-vGCGnupcTfT",
     )!,
@@ -31,7 +31,7 @@ export const MUSIC_TRACKS: Track[] = [
   {
     id: "3",
     title: "4K Cozy Coffee Shop with Smooth Piano Jazz Music for Relaxing, Studying and Working by Relaxing Jazz Piano",
-    category: "Jazz 🎶",
+    category: "🎷 Jazz",
     youtubeId: parseYouTubeId(
       "https://youtu.be/MYPVQccHhAQ?si=wxDA7rMo1gSbR9OF",
     )!,

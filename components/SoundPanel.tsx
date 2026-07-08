@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Slider } from "@/components/ui/slider";
 import { MarqueeText } from "@/components/MarqueeText";
+import { chromeInset, chromeRow, chromeSegment, chromeShell } from "@/lib/chrome";
 import { cn } from "@/lib/utils";
 import {
   ChevronDown,
@@ -58,7 +59,6 @@ function Equalizer() {
 export function SoundPanel() {
   const {
     currentTrack,
-    currentTrackId,
     isPlaying,
     togglePlay,
     nextTrack,
@@ -124,20 +124,22 @@ export function SoundPanel() {
       aria-label="Music player"
       data-expanded={expanded}
       className={cn(
-        "gap-0 rounded-2xl border-border/60 bg-card py-0 shadow-sm ring-0 [--card-spacing:0.75rem]",
+        chromeShell,
+        "gap-0 py-0 ring-0 [--card-spacing:0.75rem]",
         transitionClass,
-        expanded ? "w-80" : "w-max max-w-72",
+        expanded ? "w-72" : "w-60 max-w-64",
       )}
     >
       <CardContent
         className={cn(
-          "flex items-center gap-3 px-3",
+          chromeRow,
+          chromeInset,
+          "gap-2 py-0",
           transitionClass,
-          expanded ? "py-2.5" : "py-2",
         )}
       >
         {expanded ? (
-          <div className="flex h-8 min-w-0 flex-1 items-center">
+          <div className="flex h-full min-w-0 flex-1 items-center">
             <MarqueeText text={trackLine} active={isPlaying} />
           </div>
         ) : (
@@ -146,12 +148,37 @@ export function SoundPanel() {
             onClick={() => setExpanded(true)}
             aria-label={`Expand music player: ${trackLine}`}
             aria-expanded={false}
-            className="flex h-8 min-w-0 flex-1 cursor-pointer items-center gap-2 text-left"
+            className="group relative grid h-full min-w-0 w-full cursor-pointer grid-cols-[1rem_1fr] items-center gap-2 text-left"
           >
-            {isPlaying && currentTrack ? (
-              <Equalizer />
-            ) : null}
-            <MarqueeText text={trackLine} active={isPlaying} />
+            <span className="flex w-4 shrink-0 items-center justify-center">
+              {isPlaying && currentTrack ? <Equalizer /> : null}
+            </span>
+            <span
+              className={cn(
+                "min-w-0 w-full pr-0 transition-[padding] ease-out",
+                "group-hover:pr-5 group-focus-visible:pr-5",
+                "[@media(hover:none)]:pr-5",
+                reducedMotion ? "" : "duration-200",
+                "group-hover:[&>div]:[mask-image:linear-gradient(to_right,transparent,black_8%,black_93%,transparent)]",
+                "group-focus-visible:[&>div]:[mask-image:linear-gradient(to_right,transparent,black_8%,black_93%,transparent)]",
+                "[@media(hover:none)]:[&>div]:[mask-image:linear-gradient(to_right,transparent,black_8%,black_93%,transparent)]",
+              )}
+            >
+              <MarqueeText
+                text={trackLine}
+                active={isPlaying}
+                fade="both"
+              />
+            </span>
+            <ChevronDown
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute right-0 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground opacity-0 [@media(hover:none)]:opacity-50",
+                reducedMotion
+                  ? "group-hover:opacity-100 group-focus-visible:opacity-100"
+                  : "transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100",
+              )}
+            />
           </button>
         )}
 
@@ -171,7 +198,7 @@ export function SoundPanel() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-7 gap-1 rounded-md px-2.5 text-xs"
+                  className={cn(chromeSegment, "h-7 gap-1 px-2.5 text-xs")}
                 />
               }
             >
@@ -193,9 +220,6 @@ export function SoundPanel() {
                     const isUnavailable = tracks.every((t) =>
                       unavailable.has(t.id),
                     );
-                    const isActive = tracks.some(
-                      (t) => t.id === currentTrackId,
-                    );
                     const firstAvailable = tracks.find(
                       (t) => !unavailable.has(t.id),
                     );
@@ -207,10 +231,9 @@ export function SoundPanel() {
                         onClick={() => {
                           if (firstAvailable) selectTrack(firstAvailable.id);
                         }}
-                        className="flex items-center justify-between"
+                        className="flex items-center"
                       >
                         <span className="text-sm">{category}</span>
-                        {isActive && isPlaying ? <Equalizer /> : null}
                       </DropdownMenuItem>
                     );
                   })}
@@ -223,7 +246,7 @@ export function SoundPanel() {
 
       <CardFooter
         className={cn(
-          "flex items-center gap-3 overflow-hidden border-border/60 bg-transparent px-3",
+          "flex items-center gap-2 overflow-hidden border-border/60 bg-transparent px-3",
           transitionClass,
           expanded
             ? "max-h-16 border-t py-2 opacity-100"
@@ -249,7 +272,7 @@ export function SoundPanel() {
             onClick={togglePlay}
             disabled={!currentTrack}
             aria-label={isPlaying ? "Pause sound" : "Play sound"}
-            className="mx-0.5 size-8 rounded-lg shadow-sm"
+            className={cn(chromeSegment, "mx-0.5 size-8 shadow-sm")}
           >
             {isPlaying ? <Pause /> : <Play />}
           </Button>

@@ -8,9 +8,21 @@ interface MarqueeTextProps {
   className?: string;
   /** When false, long text stays static (truncated) instead of scrolling. */
   active?: boolean;
+  /** Scroll mask: fade both edges (default), trailing edge only, or none. */
+  fade?: "both" | "end" | "none";
 }
 
-export function MarqueeText({ text, className, active = true }: MarqueeTextProps) {
+const SCROLL_MASK = {
+  both: "[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]",
+  end: "[mask-image:linear-gradient(to_right,black,black_93%,transparent)]",
+} as const;
+
+export function MarqueeText({
+  text,
+  className,
+  active = true,
+  fade = "both",
+}: MarqueeTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const [shouldScroll, setShouldScroll] = useState(false);
@@ -45,9 +57,8 @@ export function MarqueeText({ text, className, active = true }: MarqueeTextProps
     <div
       ref={containerRef}
       className={cn(
-        "relative min-w-0 flex-1 overflow-hidden",
-        scroll &&
-          "[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]",
+        "relative min-w-0 w-full overflow-hidden",
+        scroll && fade !== "none" && SCROLL_MASK[fade],
       )}
     >
       <span

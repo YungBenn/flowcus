@@ -2,7 +2,8 @@
 
 import { useTimerContext } from "@/context/TimerContext";
 import type { TimerMode } from "@/lib/timer/types";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { chromePad, chromeRow, chromeSegment, chromeShell } from "@/lib/chrome";
+import { cn } from "@/lib/utils";
 
 const MODES: { id: TimerMode; label: string }[] = [
   { id: "pomodoro", label: "Pomodoro" },
@@ -13,27 +14,32 @@ export function ModeToggle() {
   const { mode, setMode } = useTimerContext();
 
   return (
-    <div className="rounded-xl border border-border/60 bg-card p-1 shadow-sm">
-      <ToggleGroup
-        value={mode ? [mode] : []}
-        onValueChange={(values) => {
-          const next = values[0] as TimerMode | undefined;
-          if (next) setMode(next);
-        }}
-        spacing={0}
-        className="w-full rounded-full bg-muted/50 p-0.5"
-        aria-label="Timer mode"
-      >
-        {MODES.map((m) => (
-          <ToggleGroupItem
+    <div
+      role="tablist"
+      aria-label="Timer mode"
+      className={cn(chromeShell, chromeRow, chromePad, "gap-0.5")}
+    >
+      {MODES.map((m) => {
+        const active = mode === m.id;
+        return (
+          <button
             key={m.id}
-            value={m.id}
-            className="!rounded-full flex-1 border-0 px-4 py-1.5 text-center text-sm font-medium text-muted-foreground shadow-none transition-all hover:bg-transparent hover:text-foreground focus-visible:ring-2 aria-pressed:bg-white/10 aria-pressed:font-semibold aria-pressed:text-foreground aria-pressed:shadow-sm data-pressed:bg-white/10 data-pressed:font-semibold data-pressed:text-foreground data-pressed:shadow-sm"
+            role="tab"
+            type="button"
+            aria-selected={active}
+            onClick={() => setMode(m.id)}
+            className={cn(
+              "h-full px-3 text-xs font-medium whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+              chromeSegment,
+              active
+                ? "bg-white font-semibold text-foreground shadow-sm dark:bg-white/10"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
             {m.label}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -8,6 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { chromeSegment } from "@/lib/chrome";
+import { cn } from "@/lib/utils";
 import { Layers2 } from "lucide-react";
 
 interface VisualStyleToggleProps {
@@ -29,9 +31,12 @@ export function VisualStyleToggle({
           <Button
             type="button"
             variant="ghost"
-            size="icon"
+            size="icon-sm"
             aria-label={`Change visual style (${activeStyle.label})`}
-            className="text-muted-foreground hover:text-foreground"
+            className={cn(
+              chromeSegment,
+              "text-muted-foreground hover:text-foreground",
+            )}
           />
         }
       >

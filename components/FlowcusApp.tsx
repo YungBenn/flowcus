@@ -9,9 +9,7 @@ import { Controls } from "@/components/Controls";
 import { ModeToggle } from "@/components/ModeToggle";
 import { SoundPanel } from "@/components/SoundPanel";
 import { TimerStage } from "@/components/TimerStage";
-import { SettingsSheet } from "@/components/SettingsSheet";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { VisualStyleToggle } from "@/components/VisualStyleToggle";
+import { TopBarActions } from "@/components/TopBarActions";
 import { AppSync } from "@/components/AppSync";
 import { loadState } from "@/lib/persistence";
 import { playChime } from "@/lib/audio/chime";
@@ -36,22 +34,20 @@ export function FlowcusApp() {
           <main className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden">
             <TimerStage styleId={styleId} />
 
-            <div className="absolute left-6 top-6 z-20">
-              <SoundPanel />
-            </div>
-
-            <div className="absolute left-1/2 top-6 z-20 -translate-x-1/2">
-              <ModeToggle />
-            </div>
-
-            <div className="absolute right-6 top-6 z-20 flex items-center gap-1">
-              <ThemeToggle />
-              <VisualStyleToggle
-                styleId={styleId}
-                onStyleChange={setStyleId}
-              />
-              <SettingsSheet />
-            </div>
+            <header className="absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-start gap-4 px-6 pt-6">
+              <div className="min-w-0 justify-self-start">
+                <SoundPanel />
+              </div>
+              <div className="justify-self-center">
+                <ModeToggle />
+              </div>
+              <div className="justify-self-end">
+                <TopBarActions
+                  styleId={styleId}
+                  onStyleChange={setStyleId}
+                />
+              </div>
+            </header>
 
             <div className="relative z-10 flex flex-col items-center gap-12">
               <TimerDisplay />

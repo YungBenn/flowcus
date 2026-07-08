@@ -7,15 +7,41 @@ import { clampSetting } from "@/lib/timer/machine";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Minus, Plus, Settings } from "lucide-react";
+import {
+  chromeInset,
+  chromePad,
+  chromeRow,
+  chromeSegment,
+  chromeShell,
+} from "@/lib/chrome";
+import { cn } from "@/lib/utils";
+import { Minus, Plus, Settings, X } from "lucide-react";
+
+const settingsControlCol =
+  "flex w-[6.25rem] shrink-0 items-center justify-end";
+
+function SettingsRow({
+  label,
+  control,
+}: {
+  label: ReactNode;
+  control: ReactNode;
+}) {
+  return (
+    <div className="grid min-h-9 grid-cols-[1fr_6.25rem] items-center gap-x-3">
+      <div className="min-w-0">{label}</div>
+      <div className={settingsControlCol}>{control}</div>
+    </div>
+  );
+}
 
 interface StepperProps {
   id: string;
@@ -27,54 +53,72 @@ interface StepperProps {
 }
 
 function Stepper({ id, label, value, min, max, onChange }: StepperProps) {
-  return (
-    <div className="flex items-center justify-between gap-6">
-      <Label htmlFor={id} className="text-sm text-muted-foreground">
-        {label}
-      </Label>
-      <div className="flex items-center rounded-full bg-muted/50 p-0.5 ring-1 ring-border/50">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          aria-label={`Decrease ${label}`}
-          className="size-7 rounded-full text-muted-foreground hover:bg-background/50 hover:text-foreground"
-          onClick={() => onChange(clampSetting(value - 1, min, max))}
-        >
-          <Minus className="size-3.5" />
-        </Button>
-        <Input
-          id={id}
-          type="number"
-          value={value}
-          min={min}
-          max={max}
-          onChange={(e) =>
-            onChange(clampSetting(Number(e.target.value), min, max))
-          }
-          onBlur={(e) =>
-            onChange(clampSetting(Number(e.target.value) || min, min, max))
-          }
-          className="h-7 w-10 border-0 bg-transparent px-0 text-center text-sm font-medium tabular-nums shadow-none focus-visible:border-transparent focus-visible:ring-0 dark:bg-transparent"
-        />
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          aria-label={`Increase ${label}`}
-          className="size-7 rounded-full text-muted-foreground hover:bg-background/50 hover:text-foreground"
-          onClick={() => onChange(clampSetting(value + 1, min, max))}
-        >
-          <Plus className="size-3.5" />
-        </Button>
-      </div>
+  const track = (
+    <div
+      className={cn(
+        chromePad,
+        chromeRow,
+        "w-full justify-between rounded-lg bg-muted/50 py-0",
+      )}
+    >
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-label={`Decrease ${label}`}
+        className={cn(
+          chromeSegment,
+          "size-7 shrink-0 text-muted-foreground hover:bg-background/50 hover:text-foreground",
+        )}
+        onClick={() => onChange(clampSetting(value - 1, min, max))}
+      >
+        <Minus className="size-3.5" />
+      </Button>
+      <Input
+        id={id}
+        type="number"
+        value={value}
+        min={min}
+        max={max}
+        onChange={(e) =>
+          onChange(clampSetting(Number(e.target.value), min, max))
+        }
+        onBlur={(e) =>
+          onChange(clampSetting(Number(e.target.value) || min, min, max))
+        }
+        className="h-7 w-9 border-0 bg-transparent px-0 text-center text-sm font-medium tabular-nums shadow-none [appearance:textfield] focus-visible:border-transparent focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:bg-transparent"
+      />
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-label={`Increase ${label}`}
+        className={cn(
+          chromeSegment,
+          "size-7 shrink-0 text-muted-foreground hover:bg-background/50 hover:text-foreground",
+        )}
+        onClick={() => onChange(clampSetting(value + 1, min, max))}
+      >
+        <Plus className="size-3.5" />
+      </Button>
     </div>
+  );
+
+  return (
+    <SettingsRow
+      label={
+        <Label htmlFor={id} className="text-sm font-medium text-foreground/80">
+          {label}
+        </Label>
+      }
+      control={track}
+    />
   );
 }
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">
+    <p className="mb-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
       {children}
     </p>
   );
@@ -89,23 +133,53 @@ export function SettingsSheet() {
         render={
           <Button
             variant="ghost"
-            size="icon"
+            size="icon-sm"
             aria-label="Open settings"
-            className="text-muted-foreground hover:text-foreground"
+            className={cn(
+              chromeSegment,
+              "text-muted-foreground hover:text-foreground",
+            )}
           />
         }
       >
         <Settings />
       </DialogTrigger>
-      <DialogContent className="gap-0 overflow-hidden rounded-2xl border-border/60 p-0 sm:max-w-xs">
-        <DialogHeader className="border-b border-border/50 px-5 py-4">
-          <DialogTitle className="text-sm font-semibold tracking-tight">
+      <DialogContent
+        showCloseButton={false}
+        className={cn(
+          chromeShell,
+          "gap-0 overflow-hidden p-0 ring-0 sm:max-w-sm",
+        )}
+      >
+        <div
+          className={cn(
+            chromeRow,
+            chromeInset,
+            "shrink-0 justify-between gap-2 border-b border-border/60",
+          )}
+        >
+          <DialogTitle className="text-sm font-semibold leading-none">
             Settings
           </DialogTitle>
-        </DialogHeader>
+          <DialogClose
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Close settings"
+                className={cn(
+                  chromeSegment,
+                  "size-7 shrink-0 text-muted-foreground hover:text-foreground",
+                )}
+              />
+            }
+          >
+            <X className="size-4" />
+          </DialogClose>
+        </div>
 
-        <div className="flex flex-col gap-6 px-5 py-5">
-          <section className="flex flex-col gap-3.5">
+        <div className="flex flex-col py-3">
+          <section className={cn(chromeInset, "flex flex-col gap-3 py-4")}>
             <SectionLabel>Pomodoro</SectionLabel>
             <Stepper
               id="pomodoro-focus"
@@ -125,9 +199,9 @@ export function SettingsSheet() {
             />
           </section>
 
-          <div className="h-px bg-border/50" />
+          <div className="h-px bg-border/60" />
 
-          <section className="flex flex-col gap-3.5">
+          <section className={cn(chromeInset, "flex flex-col gap-3 py-4")}>
             <SectionLabel>Deep Work</SectionLabel>
             <Stepper
               id="deepwork-focus"
@@ -139,25 +213,39 @@ export function SettingsSheet() {
             />
           </section>
 
-          <div className="h-px bg-border/50" />
+          <div className="h-px bg-border/60" />
 
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="auto-start" className="text-sm font-medium">
-                Auto-start next phase
-              </Label>
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                Roll straight into the next focus or break
-              </p>
-            </div>
-            <Switch
-              id="auto-start"
-              checked={settings.autoStartNext}
-              onCheckedChange={(checked) =>
-                updateSettings({ autoStartNext: checked })
+          <section className={cn(chromeInset, "py-4")}>
+            <SettingsRow
+              label={
+                <div className="flex flex-col gap-0.5">
+                  <Label htmlFor="auto-start" className="text-sm font-medium">
+                    Auto-start next phase
+                  </Label>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    Roll straight into the next focus or break
+                  </p>
+                </div>
+              }
+              control={
+                <div
+                  className={cn(
+                    chromePad,
+                    chromeRow,
+                    "rounded-lg bg-muted/50 px-2 py-0",
+                  )}
+                >
+                  <Switch
+                    id="auto-start"
+                    checked={settings.autoStartNext}
+                    onCheckedChange={(checked) =>
+                      updateSettings({ autoStartNext: checked })
+                    }
+                  />
+                </div>
               }
             />
-          </div>
+          </section>
         </div>
       </DialogContent>
     </Dialog>
