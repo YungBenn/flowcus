@@ -223,8 +223,8 @@ function FluidBlobs({
         theme={theme}
       />
       <FluidBlob
-        position={[1.15, -0.75, 0.1]}
-        radius={0.55}
+        position={[1.0, -0.65, 0.15]}
+        radius={0.72}
         hotSpot={[-0.2, 0.1]}
         phaseOffset={1.7}
         geometryDetail={geometryDetail}

@@ -228,21 +228,13 @@ export function SettingsSheet() {
                 </div>
               }
               control={
-                <div
-                  className={cn(
-                    chromePad,
-                    chromeRow,
-                    "rounded-lg bg-muted/50 px-2 py-0",
-                  )}
-                >
-                  <Switch
-                    id="auto-start"
-                    checked={settings.autoStartNext}
-                    onCheckedChange={(checked) =>
-                      updateSettings({ autoStartNext: checked })
-                    }
-                  />
-                </div>
+                <Switch
+                  id="auto-start"
+                  checked={settings.autoStartNext}
+                  onCheckedChange={(checked) =>
+                    updateSettings({ autoStartNext: checked })
+                  }
+                />
               }
             />
           </section>

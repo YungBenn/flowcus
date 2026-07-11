@@ -36,6 +36,14 @@ export const MUSIC_TRACKS: Track[] = [
       "https://youtu.be/MYPVQccHhAQ?si=wxDA7rMo1gSbR9OF",
     )!,
   },
+  {
+    id: "4",
+    title: "Rainstorm Sounds for Relaxing, Focus or Deep Sleep by Calm",
+    category: "🌧️ Rainstorm",
+    youtubeId: parseYouTubeId(
+      "https://youtu.be/yIQd2Ya0Ziw?si=5C8c8DNbjnk9N0zr",
+    )!,
+  },
 ];
 
 export const ALL_TRACKS: Track[] = [...MUSIC_TRACKS];
