@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ALL_TRACKS, getTrackById, type Track } from "@/lib/audio/tracks";
+import { ALL_TRACKS, getTrackById, getTracksInCategory, type Track } from "@/lib/audio/tracks";
 import type { YouTubePlayerApi } from "@/lib/audio/youtubePlayerApi";
 import { DEFAULT_YOUTUBE_PLAYER_API } from "@/lib/audio/youtubePlayerApi";
 
@@ -71,13 +71,17 @@ export function useAudio(options: UseAudioOptions = {}): UseAudioResult {
 
   const step = useCallback(
     (direction: 1 | -1) => {
-      const count = ALL_TRACKS.length;
+      const currentTrack = getTrackById(currentTrackId);
+      const pool = currentTrack
+        ? getTracksInCategory(currentTrack.categoryId)
+        : ALL_TRACKS;
+      const count = pool.length;
       if (count === 0) return;
-      const currentIndex = ALL_TRACKS.findIndex((t) => t.id === currentTrackId);
+      const currentIndex = pool.findIndex((t) => t.id === currentTrackId);
       const from = currentIndex === -1 ? (direction === 1 ? -1 : 0) : currentIndex;
 
       for (let i = 1; i <= count; i++) {
-        const next = ALL_TRACKS[(from + direction * i + count * count) % count];
+        const next = pool[(from + direction * i + count * count) % count];
         if (!unavailable.has(next.id)) {
           setCurrentTrackId(next.id);
           play(next);

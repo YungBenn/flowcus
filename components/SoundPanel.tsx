@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAudioContext } from "@/context/AudioContext";
-import { groupTracksByCategory, MUSIC_TRACKS } from "@/lib/audio/tracks";
+import { getCategoryById, groupTracksByCategory, MUSIC_TRACKS } from "@/lib/audio/tracks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -80,13 +80,14 @@ export function SoundPanel() {
       ? "Add YouTube tracks to play music"
       : "Pick a sound";
 
-  const categoryLabel = currentTrack?.category ?? "Pick a sound";
+  const categoryLabel =
+    getCategoryById(currentTrack?.categoryId ?? "")?.label ?? "Pick a sound";
   const hasTracks = MUSIC_TRACKS.length > 0;
   const trackGroups = groupTracksByCategory(MUSIC_TRACKS);
 
   const transitionClass = reducedMotion
     ? ""
-    : "transition-[width,opacity,max-height,padding] duration-200 ease-out";
+    : "transition-[width,height,opacity,max-height,padding] duration-200 ease-out";
 
   useEffect(() => {
     if (!expanded) return;
@@ -127,19 +128,21 @@ export function SoundPanel() {
         chromeShell,
         "gap-0 py-0 ring-0 [--card-spacing:0.75rem]",
         transitionClass,
-        expanded ? "w-72" : "w-60 max-w-64",
+        expanded
+          ? "w-80 max-w-[min(20rem,calc(100vw-12rem))]"
+          : "w-60 max-w-64",
       )}
     >
       <CardContent
         className={cn(
           chromeRow,
           chromeInset,
-          "gap-2 py-0",
+          expanded ? "h-10 gap-3 py-0" : "h-[2.125rem] gap-3 py-0",
           transitionClass,
         )}
       >
         {expanded ? (
-          <div className="flex h-full min-w-0 flex-1 items-center">
+          <div className="flex h-full min-w-0 flex-1 items-center overflow-hidden">
             <MarqueeText text={trackLine} active={isPlaying} />
           </div>
         ) : (
@@ -198,12 +201,15 @@ export function SoundPanel() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className={cn(chromeSegment, "h-7 gap-1 px-2.5 text-xs")}
+                  className={cn(
+                    chromeSegment,
+                    "h-7 max-w-[9rem] shrink-0 gap-1 px-2.5 text-xs",
+                  )}
                 />
               }
             >
-              {categoryLabel}
-              <ChevronDown className="size-3 text-muted-foreground" />
+              <span className="truncate">{categoryLabel}</span>
+              <ChevronDown className="size-3 shrink-0 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {MUSIC_TRACKS.length === 0 ? (
@@ -226,14 +232,14 @@ export function SoundPanel() {
 
                     return (
                       <DropdownMenuItem
-                        key={category}
+                        key={category.id}
                         disabled={isUnavailable || !firstAvailable}
                         onClick={() => {
                           if (firstAvailable) selectTrack(firstAvailable.id);
                         }}
                         className="flex items-center"
                       >
-                        <span className="text-sm">{category}</span>
+                        <span className="text-sm">{category.label}</span>
                       </DropdownMenuItem>
                     );
                   })}
@@ -261,7 +267,7 @@ export function SoundPanel() {
             onClick={prevTrack}
             disabled={!hasTracks}
             aria-label="Previous sound"
-            className="size-7"
+            className="size-7 [&_svg]:!size-3.5"
           >
             <SkipBack />
           </Button>
@@ -283,7 +289,7 @@ export function SoundPanel() {
             onClick={nextTrack}
             disabled={!hasTracks}
             aria-label="Next sound"
-            className="size-7"
+            className="size-7 [&_svg]:!size-3.5"
           >
             <SkipForward />
           </Button>

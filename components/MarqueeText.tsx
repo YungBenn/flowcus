@@ -65,7 +65,7 @@ export function MarqueeText({
         ref={measureRef}
         aria-hidden
         className={cn(
-          "pointer-events-none absolute whitespace-nowrap text-sm opacity-0",
+          "pointer-events-none absolute whitespace-nowrap text-xs font-medium opacity-0",
           className,
         )}
       >
@@ -83,7 +83,7 @@ export function MarqueeText({
         >
           <span
             className={cn(
-              "inline-block shrink-0 whitespace-nowrap pr-10 text-sm text-foreground",
+              "inline-block shrink-0 whitespace-nowrap pr-10 text-xs font-medium text-foreground",
               className,
             )}
           >
@@ -92,7 +92,7 @@ export function MarqueeText({
           <span
             aria-hidden
             className={cn(
-              "inline-block shrink-0 whitespace-nowrap pr-10 text-sm text-foreground",
+              "inline-block shrink-0 whitespace-nowrap pr-10 text-xs font-medium text-foreground",
               className,
             )}
           >
@@ -102,7 +102,7 @@ export function MarqueeText({
       ) : (
         <span
           className={cn(
-            "block truncate text-sm text-foreground",
+            "block truncate text-xs font-medium text-foreground",
             className,
           )}
         >
