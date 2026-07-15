@@ -1,7 +1,7 @@
 # Flowcus
 
 A calm, client-side focus timer that pairs a living 3D motion bubble with
-ambient sound. Built with Next.js, react-three-fiber, and the Web Audio API.
+ambient sound. Built with Next.js, react-three-fiber, and the YouTube IFrame API.
 
 ## Features
 
@@ -10,14 +10,19 @@ ambient sound. Built with Next.js, react-three-fiber, and the Web Audio API.
   - Deep Work - one long 90 min focus block (customizable)
   - Accurate `requestAnimationFrame` + wall-clock timing that survives
     background tab throttling
-- **Ambient music player** (top-left)
-  - Synthesized noise: rain, brown, pink, white (Web Audio, no files needed)
-  - Bundled lofi slots that gracefully degrade until you add audio files
-  - Shared `AudioContext` + `AnalyserNode` so visuals react to sound
+- **Ambient music player** (top-left `SoundPanel`)
+  - YouTube streams via a hidden iframe player
+  - Categories with stable IDs (`cinematic`, `lofi`, `jazz`, `rainstorm`) and display labels
+  - Multiple tracks per category; skip next/prev cycles within the active category only
+  - Category dropdown switches category; unavailable videos are skipped gracefully
+  - Simulated amplitude drives the 3D bubble visuals
 - **3D motion bubble** (center)
   - Distorts and pulses to live music amplitude
   - Color shifts with timer progress; warm palette for focus, cool for breaks
   - Pluggable renderer registry so new timer styles slot in easily
+- **Chrome controls** (top bar)
+  - Light/dark theme toggle
+  - Visual style switcher (3D bubble registry)
 - **Settings** - custom durations and auto-start next phase
 - **Persistence** - preferences saved to `localStorage`
 - Respects `prefers-reduced-motion`
@@ -31,25 +36,50 @@ bun run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Adding lofi tracks
+## Adding music tracks
 
-Drop royalty-free `.mp3` files into [`public/audio`](public/audio) matching the
-`src` entries in [`lib/audio/tracks.ts`](lib/audio/tracks.ts). Missing files are
-shown greyed out and skipped; the synthesized noise voices always work.
+Edit [`lib/audio/tracks.ts`](lib/audio/tracks.ts).
+
+1. Add a category to `MUSIC_CATEGORIES` (if needed):
+
+```ts
+{ id: "cinematic", label: "🚀 Cinematic" }
+```
+
+2. Append a track entry referencing `categoryId` and a YouTube URL via `parseYouTubeId()`:
+
+```ts
+{
+  id: "7",
+  title: "Track title",
+  categoryId: "cinematic",
+  youtubeId: parseYouTubeId("https://youtu.be/...")!,
+}
+```
+
+Each track needs a unique `id` string. Skip navigation stays within the same `categoryId`.
 
 ## Architecture
 
 ```
-app/                 Next.js App Router entry + global styles
-components/           UI (player, controls, display, settings, switcher)
-components/timerStyles/  Timer-style renderers (3D bubble)
-context/              Timer + Audio React contexts
-hooks/                useTimer (rAF engine), useAudio (Web Audio graph)
-lib/timer/            Pure timer state machine + types
-lib/audio/            Noise generators, track manifest, chime
-lib/timerStyles/      Renderer registry + types
-lib/persistence.ts    Typed localStorage load/save
+app/                      Next.js App Router entry + global styles
+components/               UI (controls, display, settings, top bar)
+components/SoundPanel.tsx Expandable music chrome
+components/YouTubePlayer.tsx  Hidden iframe player
+components/timerStyles/   Timer-style renderers (3D bubble)
+context/                  Timer, Audio, and Theme React contexts
+hooks/                    useTimer (rAF engine), useAudio (YouTube orchestration)
+lib/timer/                Pure timer state machine + types
+lib/audio/                Track manifest, YouTube helpers, phase chime
+lib/chrome.ts             Shared top-bar surface tokens
+lib/timerStyles/          Renderer registry + types
+lib/persistence.ts        Typed localStorage load/save
 ```
+
+## Deploy
+
+The project includes [`netlify.toml`](netlify.toml) with `@netlify/plugin-nextjs`.
+Run `bun run build` and deploy the output with any Netlify-compatible workflow.
 
 ## Scripts
 
