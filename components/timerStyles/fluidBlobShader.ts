@@ -114,12 +114,18 @@ void main() {
   baseColor = mix(baseColor, uOrange, hotMask * 0.85);
 
   float ndotl = max(dot(normal, lightDir), 0.0);
-  float diffuse = uDiffuseBase + ndotl * uDiffuseScale;
+  float diffuse = uDiffuseBase + ndotl * uDiffuseScale * 0.85;
 
   float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.5);
   float glow = hotMask * 0.35 + smoothstep(0.0, 1.0, blend) * 0.12;
 
+  // Faked subsurface scattering: light "glowing through" the far side of the
+  // surface, tinted warm, for a soft translucent-tissue feel instead of plastic.
+  float backLight = pow(max(dot(-normal, lightDir), 0.0), 1.5);
+  vec3 translucency = mix(uPink, uOrange, 0.5) * backLight * 0.22;
+
   vec3 color = baseColor * diffuse;
+  color += translucency;
   color += uRimColor * fresnel * uRimStrength;
   color += uOrange * glow;
 

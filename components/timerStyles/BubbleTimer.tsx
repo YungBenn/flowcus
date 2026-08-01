@@ -10,6 +10,7 @@ import {
 } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AdaptiveDpr, PerformanceMonitor } from "@react-three/drei";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { useAudioContext } from "@/context/AudioContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -126,19 +127,37 @@ function FluidBlob({
     mat.uniforms.uDistort.value = 0.2 + motion * (0.18 + amplitude * 0.35);
 
     if (meshRef.current) {
-      const scale = radius * (1 + motion * amplitude * 0.1);
+      // Asymmetric breath envelope: quicker inhale, slower exhale, offset per blob
+      // so the two never breathe in lockstep.
+      const breathCycle = 4.5;
+      const bt = (((t + phaseOffset * 1.4) % breathCycle) + breathCycle) % breathCycle / breathCycle;
+      const breath =
+        bt < 0.35
+          ? 1 - Math.pow(1 - bt / 0.35, 3)
+          : 1 - Math.pow((bt - 0.35) / 0.65, 2);
+
+      const scale = radius * (1 + motion * breath * (0.03 + amplitude * 0.08));
       meshRef.current.scale.setScalar(
         THREE.MathUtils.lerp(meshRef.current.scale.x, scale, delta * 6),
       );
 
+      // Detuned low-amplitude sines fake a subtle "never quite settled" jitter.
+      const jitter = motion * 0.012;
+      const jitterX =
+        Math.sin(t * 1.7 + phaseOffset * 2.1) * 0.6 + Math.sin(t * 2.9 + phaseOffset) * 0.4;
+      const jitterY =
+        Math.sin(t * 2.3 + phaseOffset * 1.3) * 0.6 + Math.cos(t * 3.4 + phaseOffset) * 0.4;
+
       meshRef.current.position.set(
         basePosition.x +
-          Math.sin(t * floatSpeed + phaseOffset) * 0.06 * motion * floatIntensity,
+          Math.sin(t * floatSpeed + phaseOffset) * 0.06 * motion * floatIntensity +
+          jitterX * jitter,
         basePosition.y +
           Math.cos(t * floatSpeed * 0.85 + phaseOffset) *
             0.05 *
             motion *
-            floatIntensity,
+            floatIntensity +
+          jitterY * jitter,
         basePosition.z,
       );
       meshRef.current.rotation.y += delta * rotationIntensity * motion * 0.15;
@@ -280,6 +299,16 @@ function Scene({
         motionRef={motionRef}
         theme={theme}
       />
+      {quality >= 0.75 && theme === "dark" && (
+        <EffectComposer multisampling={0}>
+          <Bloom
+            mipmapBlur
+            luminanceThreshold={0.75}
+            luminanceSmoothing={0.2}
+            intensity={0.35}
+          />
+        </EffectComposer>
+      )}
     </>
   );
 }
