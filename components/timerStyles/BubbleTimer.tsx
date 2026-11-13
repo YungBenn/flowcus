@@ -66,7 +66,9 @@ function FluidBlob({
     if (meshRef.current) {
       const scale = radius * (1 + motion * amplitude * 0.1);
       meshRef.current.scale.setScalar(
-        THREE.MathUtils.lerp(meshRef.current.scale.x, scale, delta * 6),
+        // Clamp: after an idle stretch in demand mode delta can be seconds,
+        // and an unclamped factor overshoots (huge or negative blob).
+        THREE.MathUtils.lerp(meshRef.current.scale.x, scale, Math.min(1, delta * 6)),
       );
 
       meshRef.current.position.set(
