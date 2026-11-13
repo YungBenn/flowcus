@@ -137,7 +137,7 @@ export function SoundPanel() {
         className={cn(
           chromeRow,
           chromeInset,
-          expanded ? "h-10 gap-3 py-0" : "h-[2.125rem] gap-3 py-0",
+          "h-[2.625rem] gap-3 py-0",
           transitionClass,
         )}
       >
@@ -203,7 +203,7 @@ export function SoundPanel() {
                   size="sm"
                   className={cn(
                     chromeSegment,
-                    "h-7 max-w-[9rem] shrink-0 gap-1 px-2.5 text-xs",
+                    "h-8 max-w-[9rem] shrink-0 gap-1 px-3 text-[13px]",
                   )}
                 />
               }
@@ -267,7 +267,7 @@ export function SoundPanel() {
             onClick={prevTrack}
             disabled={!hasTracks}
             aria-label="Previous sound"
-            className="size-7 [&_svg]:!size-3.5"
+            className="size-9 [&_svg]:!size-4"
           >
             <SkipBack />
           </Button>
@@ -278,7 +278,7 @@ export function SoundPanel() {
             onClick={togglePlay}
             disabled={!currentTrack}
             aria-label={isPlaying ? "Pause sound" : "Play sound"}
-            className={cn(chromeSegment, "mx-0.5 size-8 shadow-sm")}
+            className={cn(chromeSegment, "mx-0.5 size-9")}
           >
             {isPlaying ? <Pause /> : <Play />}
           </Button>
@@ -289,7 +289,7 @@ export function SoundPanel() {
             onClick={nextTrack}
             disabled={!hasTracks}
             aria-label="Next sound"
-            className="size-7 [&_svg]:!size-3.5"
+            className="size-9 [&_svg]:!size-4"
           >
             <SkipForward />
           </Button>

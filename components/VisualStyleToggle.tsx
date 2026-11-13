@@ -9,7 +9,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { chromeSegment } from "@/lib/chrome";
+import { chromeIcon, chromeSegment } from "@/lib/chrome";
 import { cn } from "@/lib/utils";
 import { Layers2 } from "lucide-react";
 
@@ -34,10 +34,7 @@ export function VisualStyleToggle({
             variant="ghost"
             size="icon-sm"
             aria-label={`Change visual style (${activeStyle.label})`}
-            className={cn(
-              chromeSegment,
-              "text-muted-foreground hover:text-foreground",
-            )}
+            className={cn(chromeSegment, chromeIcon)}
           />
         }
       >

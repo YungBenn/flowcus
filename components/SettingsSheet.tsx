@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
+  chromeIcon,
   chromeInset,
   chromePad,
   chromeRow,
@@ -118,7 +119,7 @@ function Stepper({ id, label, value, min, max, onChange }: StepperProps) {
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+    <p className="mb-0.5 text-[13px] font-medium text-muted-foreground">
       {children}
     </p>
   );
@@ -135,10 +136,7 @@ export function SettingsSheet() {
             variant="ghost"
             size="icon-sm"
             aria-label="Open settings"
-            className={cn(
-              chromeSegment,
-              "text-muted-foreground hover:text-foreground",
-            )}
+            className={cn(chromeSegment, chromeIcon)}
           />
         }
       >
@@ -158,7 +156,7 @@ export function SettingsSheet() {
             "shrink-0 justify-between gap-2 border-b border-border/60",
           )}
         >
-          <DialogTitle className="text-sm font-semibold leading-none">
+          <DialogTitle className="font-display text-base font-medium leading-none">
             Settings
           </DialogTitle>
           <DialogClose
@@ -222,7 +220,7 @@ export function SettingsSheet() {
                   <Label htmlFor="auto-start" className="text-sm font-medium">
                     Auto-start next phase
                   </Label>
-                  <p className="text-xs leading-relaxed text-muted-foreground">
+                  <p className="text-[13px] leading-relaxed text-muted-foreground">
                     Roll straight into the next focus or break
                   </p>
                 </div>

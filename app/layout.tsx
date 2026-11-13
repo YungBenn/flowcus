@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Figtree, Gabarito } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const figtree = Figtree({
+  variable: "--font-figtree",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const gabarito = Gabarito({
+  variable: "--font-gabarito",
   subsets: ["latin"],
   display: "swap",
 });
@@ -23,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${figtree.variable} ${gabarito.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

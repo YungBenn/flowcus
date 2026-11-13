@@ -35,7 +35,7 @@ export function FlowcusApp() {
             <TimerStage styleId={styleId} />
 
             <header className="absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto] items-start gap-4 sm:grid-cols-[1fr_auto_1fr] px-6 pt-6">
-              <div className="min-w-0 justify-self-start">
+              <div className="min-w-0 w-full justify-self-start">
                 <SoundPanel />
               </div>
               {/* Own row on phones: three columns cannot fit the sound pill. */}

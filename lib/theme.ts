@@ -11,6 +11,6 @@ export function applyTheme(theme: Theme): void {
 }
 
 export const CANVAS_BG: Record<Theme, string> = {
-  dark: "#0a0a1f",
-  light: "#e6e1f0",
+  dark: "#0a0d14",
+  light: "#e9edf3",
 };

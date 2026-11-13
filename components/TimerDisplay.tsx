@@ -36,15 +36,19 @@ export function TimerDisplay() {
     >
       <span
         className={cn(
-          "text-[0.7rem] font-semibold uppercase tracking-[0.35em]",
-          isDark ? "text-white/75" : "text-foreground/55",
+          "flex items-center gap-2 text-sm font-medium",
+          isDark ? "text-white/80" : "text-foreground/70",
         )}
       >
+        <span
+          className="size-2 rounded-full bg-accent-1 transition-colors duration-700"
+          aria-hidden
+        />
         {phaseLabel}
       </span>
       <span
         className={cn(
-          "font-sans text-6xl font-semibold leading-none tabular-nums sm:text-8xl",
+          "font-display text-7xl font-normal leading-none tracking-[-0.03em] tabular-nums sm:text-9xl",
           isDark ? "text-white" : "text-foreground",
         )}
       >
@@ -52,8 +56,8 @@ export function TimerDisplay() {
       </span>
       <span
         className={cn(
-          "text-xs font-medium tracking-wide",
-          isDark ? "text-white/70" : "text-foreground/50",
+          "text-sm",
+          isDark ? "text-white/70" : "text-foreground/60",
         )}
         aria-live="polite"
       >

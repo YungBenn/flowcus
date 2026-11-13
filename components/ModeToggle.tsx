@@ -29,11 +29,11 @@ export function ModeToggle() {
             aria-selected={active}
             onClick={() => setMode(m.id)}
             className={cn(
-              "h-full px-3 text-xs font-medium whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+              "h-full px-4 text-[13px] font-medium whitespace-nowrap transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               chromeSegment,
               active
-                ? "bg-white font-semibold text-foreground shadow-sm dark:bg-white/10"
-                : "text-muted-foreground hover:text-foreground",
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {m.label}
