@@ -34,11 +34,12 @@ export function FlowcusApp() {
           <main className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden">
             <TimerStage styleId={styleId} />
 
-            <header className="absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-start gap-4 px-6 pt-6">
+            <header className="absolute inset-x-0 top-0 z-20 grid grid-cols-[1fr_auto] items-start gap-4 sm:grid-cols-[1fr_auto_1fr] px-6 pt-6">
               <div className="min-w-0 justify-self-start">
                 <SoundPanel />
               </div>
-              <div className="justify-self-center">
+              {/* Own row on phones: three columns cannot fit the sound pill. */}
+              <div className="col-span-2 row-start-2 justify-self-center sm:col-span-1 sm:col-start-2 sm:row-start-1">
                 <ModeToggle />
               </div>
               <div className="justify-self-end">

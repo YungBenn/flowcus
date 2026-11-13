@@ -130,7 +130,7 @@ export function SoundPanel() {
         transitionClass,
         expanded
           ? "w-80 max-w-[min(20rem,calc(100vw-12rem))]"
-          : "w-60 max-w-64",
+          : "w-60 max-w-full",
       )}
     >
       <CardContent
