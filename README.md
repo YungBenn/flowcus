@@ -16,13 +16,22 @@ ambient sound. Built with Next.js, react-three-fiber, and the YouTube IFrame API
   - Multiple tracks per category; skip next/prev cycles within the active category only
   - Category dropdown switches category; unavailable videos are skipped gracefully
   - Simulated amplitude drives the 3D bubble visuals
-- **3D motion bubble** (center)
-  - Distorts and pulses to live music amplitude
-  - Color shifts with timer progress; warm palette for focus, cool for breaks
+- **Timer visuals** (center, switchable from the top bar)
+  - **3D Bubble** - fluid blobs that distort and pulse to the music amplitude,
+    winding down to stillness when nothing is playing or running
+  - **Aurora** - northern-lights curtains over a starry sky (a pastel dawn in light mode)
+  - **Stardust** - a slowly turning particle galaxy; music sends ripples through the disc
+  - **Caustics** - sunlight caustics drifting across a pool floor
+  - **Horizon** - a sun (moon in dark mode) rises over still water as the phase elapses
+  - All 3D motions are single-draw-call shaders sharing one canvas shell
+    (`MotionCanvas`): on-demand rendering while idle, paused in background tabs,
+    DPR drops on slow devices
+  - **Minimal** - a single hairline ring that depletes as the phase elapses,
+    with no ambient motion at all (SVG, no WebGL)
   - Pluggable renderer registry so new timer styles slot in easily
 - **Chrome controls** (top bar)
   - Light/dark theme toggle
-  - Visual style switcher (3D bubble registry)
+  - Visual style switcher (timer style registry)
 - **Settings** - custom durations and auto-start next phase
 - **Persistence** - preferences saved to `localStorage`
 - Respects `prefers-reduced-motion`

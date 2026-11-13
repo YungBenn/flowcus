@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { chromeSegment } from "@/lib/chrome";
@@ -43,14 +44,20 @@ export function VisualStyleToggle({
         <Layers2 />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
-        {TIMER_STYLES.map((style) => (
-          <DropdownMenuItem
-            key={style.id}
-            onClick={() => onStyleChange(style.id)}
-          >
-            {style.label}
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuRadioGroup
+          value={activeStyle.id}
+          onValueChange={(id: string) => onStyleChange(id)}
+        >
+          {TIMER_STYLES.map((style) => (
+            <DropdownMenuRadioItem
+              key={style.id}
+              value={style.id}
+              closeOnClick
+            >
+              {style.label}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
