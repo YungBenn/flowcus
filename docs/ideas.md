@@ -57,11 +57,16 @@ already exists in `useTimer.advancePhase` and `onPhaseComplete`. No new state.
 Overlaps with idea 1 (both touch the phase boundary); building 1 first makes 4
 cheaper.
 
+## Done
+
+- **More motions.** Once deferred because two styles covered "beautiful" and
+  "still". Shipped 2026-11 as Aurora, Stardust (the particle drift idea), Caustics
+  and Horizon/Sunrise, alongside Bubble and Minimal. All share `MotionCanvas` and
+  follow the light/dark theme. Horizon is the one that expresses `progress`: the
+  sun or moon rises over the session.
+
 ## Considered, not taken
 
-- **More motions** (horizon/sunrise, particle drift, caustic water). The registry
-  now holds two deliberately dissimilar entries and is proven. Deferred only
-  because two styles currently cover the real need: "beautiful" and "still".
 - **Real audio amplitude.** The bubble reacts to a *simulated* signal; YouTube
   gives no access to the stream. Self-hosted audio plus a WebAudio
   `AnalyserNode` would make it real. Held back because it changes what the
